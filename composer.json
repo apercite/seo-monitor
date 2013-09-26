@@ -1,0 +1,30 @@
+{
+    "name": "apercite/seo-monitor",
+    "type": "project",
+    "description": "Your SEO monitor",
+    "keywords": ["SEO", "monitor"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Francis Besset",
+            "email": "francis.besset@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "silex/silex": "~1.1",
+        "symfony/class-loader": "~2.0",
+        "seostats/seostats": "~2.5"
+    },
+    "autoload": {
+        "psr-0": {
+            "Apercite\\SeoMonitor": "src",
+            "SEOstats\\": "vendor/seostats/seostats/"
+        },
+        "classmap": ["vendor/seostats/seostats/SEOstats/Services/3rdparty"]
+    },
+    "scripts": {
+        "post-install-cmd": "php bin/build_bootstrap",
+        "post-update-cmd": "php bin/build_bootstrap"
+    }
+}

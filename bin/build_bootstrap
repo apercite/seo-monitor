@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\ClassLoader\ClassCollectionLoader;
+
+$appDir = __DIR__.'/../app';
+$file = $appDir.'/bootstrap.php.cache';
+
+if (file_exists($file)) {
+    unlink($file);
+}
+
+require_once $appDir.'/autoload.php';
+
+ClassCollectionLoader::load(array(
+    'SEOstats\Services\Google',
+    'SEOstats\Helper\Json',
+), dirname($file), basename($file, '.php.cache'), false, false, '.php.cache');
+
+file_put_contents($file, sprintf("<?php
+
+namespace { \$loader = require_once __DIR__.'/autoload.php'; }
+
+%s
+
+namespace { return \$loader; }
+", preg_replace('#require_once([^;]+);#', '', substr(file_get_contents($file), 5))));
