@@ -14,6 +14,7 @@
         "php": ">=5.3",
         "silex/silex": "~1.1",
         "symfony/class-loader": "~2.0",
+        "symfony/console": "~2.0",
         "seostats/seostats": "~2.5"
     },
     "autoload": {

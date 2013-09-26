@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/../app/bootstrap.php.cache';
+
+use SEOstats\Services\Google;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+$console = new Application('Apercite SEO Monitor', '0.0.0-dev');
+
+$console
+    ->register('google:pagerank')
+    ->setDescription('Get the current PageRank for an URL')
+    ->addArgument('url', InputArgument::REQUIRED, 'URL')
+    ->addOption('raw', null, InputOption::VALUE_NONE)
+    ->setCode(function (InputInterface $input, OutputInterface $output) {
+        $url = $input->getArgument('url');
+        $pagerank = Google::getPageRank($url);
+
+        if ($input->getOption('raw')) {
+            $output->write(sprintf('%d', $pagerank));
+        } else {
+            $output->writeln(sprintf('The current Google PageRank for %s is %d.', $url, $pagerank));
+        }
+    })
+    ->setHelp(<<<EOF
+The <info>google:pagerank</info> command return the Google Pagerank for an URL:
+
+<info>php bin/console google:pagerank "http://www.apercite.fr/"</info>
+<info>php bin/console google:pagerank --raw "http://www.apercite.fr/"</info>
+EOF
+    )
+;
+
+$console->run();
